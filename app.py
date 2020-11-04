@@ -121,8 +121,8 @@ def get_image():
                                         np.array(boxes[0][i])))
     img = cv2.cvtColor(img_raw.numpy(), cv2.COLOR_RGB2BGR)
     img = draw_outputs(img, (boxes, scores, classes, nums), class_names)
-    cv2.imwrite(output_path + 'detection.jpg', img)
-    print('output saved to: {}'.format(output_path + 'detection.jpg'))
+    cv2.imwrite(output_path + image_name, img)
+    print('output saved to: {}'.format(output_path + image_name + '.jpg'))
     
     # prepare image for response
     _, img_encoded = cv2.imencode('.png', img)
@@ -138,7 +138,9 @@ def get_image():
 
 @app.route('/img/<filename>',methods = ['GET'])
 def give(filename):
-    filen = './detections/detection.jpg' 
+    ind = filename.index('.')
+    fnew = filename[:ind] + '.jpg'
+    filen = './detections/' + fnew
     return send_file(filen)
 
 if __name__ == '__main__':
